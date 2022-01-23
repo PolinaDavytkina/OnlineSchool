@@ -1,0 +1,57 @@
+{% macro render_course_form(url, course={}) %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div> 
+    {% endfor %}
+{% endif %}
+{% endwith %}
+<form  class="main-text" action="{{ url }}" method="POST">
+    <div class="form-group row">
+        <label for="name" class="col-form-label col-md-2">Название</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" name="name" id="name" value="{{ course.name or '' }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="description" class="col-form-label col-md-2">Описание</label>
+        <div class="col-md-6">	
+            <input class="form-control" type="text" name="description" id="description" value="{{ course.description or '' }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="number" class="col-form-label col-md-2">Количество занятий</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" name="number" id="number" value="{{ course.number or '' }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="duration" class="col-form-label col-md-2">Продолжительность занятия</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" name="duration" id="duration" value="{{ course.duration or '' }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="teacher" class="col-form-label col-md-2">Преподаватель</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" name="teacher" id="teacher" value="{{ course.teacher or '' }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="link" class="col-form-label col-md-2">Ссылки на занятия</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" name="link" id="link" value="{{ course.link or '' }}">
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <input type="submit" class="btn btn-light" value="Сохранить">
+    </div>
+</form>
+
+{% endmacro %}

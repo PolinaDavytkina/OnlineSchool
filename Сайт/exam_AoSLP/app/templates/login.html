@@ -1,0 +1,41 @@
+  
+{% extends 'base.html' %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div> 
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+    <form method="post" class="w-50 mx-auto mt-5 main-text">
+        <div class="form-group row ">
+            <label for="login" class="col-sm-2 col-form-label">Логин</label>
+            <input class="form-control col-sm-10" type="text" id="login" name="login" autocomplete="off">
+        </div>
+        <div class="form-group row">
+            <label for="password" class="col-sm-2 col-form-label">Пароль</label>
+            <input class="form-control col-sm-10" type="password" id="password" name="password" autocomplete="off">
+        </div>
+        <div class="form-group text-center">
+            <div class="col-sm-2"></div>
+            <div class="form-check col-sm-10">
+                <input type="checkbox" class="form-check-input mt-2" id="remember_me" name="remember_me">
+                <label class="form-check-label" for="remember_me">
+                    Запомнить меня
+                </label>
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-light">Войти</button>
+        </div>
+    </form>
+
+{% endblock %}

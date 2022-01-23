@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'courses/form.html' import render_course_form %}
+{% block content %}
+    <h1 class="my-5 main-text">Добавление курса</h1>
+    {{ render_course_form(url_for('create'), course) }}
+{% endblock %}
+

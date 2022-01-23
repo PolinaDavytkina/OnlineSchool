@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import render_pagination %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div> 
+    {% endfor %}
+{% endif %}
+{% endwith %}
+<h1 class="my-5 main-text">Список курсов</h1>
+
+<table class="table main-text">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Преподаватель</th>
+            <th>Количество занятий</th>
+            <th>Количество отзывов</th>
+            {% if current_user.is_authenticated %}
+            <th></th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+        <tr>
+            <td class="course-name">{{ course.name }} </td>
+            <td>
+                {{ course.teacher }}
+            </td>
+            <td>
+                {{ course.number }}
+            </td>
+            <td>{% for review in reviews %} 
+                {% if course.id==review.id %}
+                    {{ review.ct }}
+                {% else %}
+                {% endif %}
+                {% endfor %}
+            </td>
+            {% if current_user.is_authenticated %}
+            <td>
+                {% if current_user.can('show', record=course) %}
+                <a href="{{ url_for('show', course_id=course.id) }}">
+                    <button style="background: none; border: none;" >
+                        <img style="max-width: 30px; width: 100%;" src="static/images/add.svg" title="Добавление новой записи"
+                        alt="Добавление записи">
+                    </button>
+                </a>
+                {% endif %}
+                {% if current_user.can('edit', record=course) %}
+                <a  href="{{ url_for('edit', course_id=course.id) }}">
+                    <button style="background: none; border: none;" >
+                    <img style="max-width: 30px; width: 100%;" src="static/images/edit.svg" title="Редактирование записи"
+                    alt="Добавление записи">
+                </button></a>
+                {% endif %}
+                {% if current_user.can('delete', record=course) %} 
+                
+                <button type="button"  data-toggle="modal" data-target="#delete-course-modal" style="background: none; border: none;" data-url="{{ url_for('delete', course_id=course.id)}}">
+                    <img style="max-width: 30px; width: 100%;" src="static/images/delete.svg" title="Удаление записи"
+                    alt="Добавление записи">
+                </button>
+                {% endif %}
+
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if current_user.is_authenticated and current_user.can('new') %}
+<div class="text-center my-3">
+<a class="btn btn-light" href="{{ url_for('new') }}">Добавить курс</a>
+</div>
+{% endif %}
+
+<div class="modal" tabindex="-1" role="dialog" id="delete-course-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление записи</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить курс <span id="course-name"></span>?</p>
+                <form action="" method="POST" class="d-none">
+                    <input id="delete-btn" type="submit">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <label for="delete-btn" class="btn btn-danger mb-0 cursor-pointer">Да</label>
+                <button type="button" class="btn btn-secondary mb-0" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{ render_pagination(request.endpoint, pagination_info) }}
+{% endblock %}

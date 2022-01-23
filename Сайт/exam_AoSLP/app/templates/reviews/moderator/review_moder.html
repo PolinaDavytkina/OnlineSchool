@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import render_pagination %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div> 
+    {% endfor %}
+{% endif %}
+{% endwith %}
+<h1 class="my-5 main-text">Отзывы для рассмотрения</h1>
+<table class="table main-text">
+    <thead>
+        <tr>
+            <th>Название курса</th>
+            <th>Имя пользователя</th>
+            <th>Дата добавления</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for review in reviews %}
+            <tr>
+                <td class="course-name">{{ review.name }} </td>
+                <td>{{ review.last_name }} {{ review.first_name }}</td>
+                <td>
+                    {{ review.date_added }}
+                </td>
+                <td><a class="btn btn-light" href="{{ url_for('show_review', review_id=review.id) }}">Рассмотреть</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{{ render_pagination(request.endpoint, pagination_info) }}
+{% endblock %}

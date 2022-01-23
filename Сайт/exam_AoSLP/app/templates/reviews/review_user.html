@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 class="my-5 main-text">Мои отзывы</h1>
+<table class="table main-text">
+    <thead>
+        <tr>
+            <th>Название курса</th>
+            <th>Отзыв</th>
+            <th>Моя оценка</th>
+            <th>Дата</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for review in reviews %}
+            <tr>
+                <td class="course-name">{{ review.name }} </td>
+                <td>{{ review.review_text }}</td>
+                <td>
+                    {% if review.rating==5 %}отлично
+                    {% elif review.rating==4 %}хорошо{% elif review.rating==3 %}удовлетворительно
+                    {% elif review.rating==2 %}неудовлетворительно{% elif review.rating==1 %}плохо{% else %}ужасно {% endif %}
+                </td>
+                <td>
+                    {{ review.date_added }}
+                </td>
+                <td>
+                    {{ review.status }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

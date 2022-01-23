@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% from 'courses/form.html' import render_course_form %}
+{% block content %}
+    <h1 class="my-5 main-text">Редактирование курса</h1>
+
+    {{ render_course_form(url_for('update', course_id=course.id), course) }}
+
+{% endblock %}
+

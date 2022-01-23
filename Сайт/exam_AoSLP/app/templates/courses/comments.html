@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div> 
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<h2 class="main-text">Оставьте комментарий</h2>
+
+<form  class="main-text" action="{{ url }}" method="POST">
+    <div class="form-group">
+        <label for="rating">Оцените данный курс:</label>
+        <select class="form-control" data-live-search="true" name="rating" id="rating">
+            <option value="5" selected >Отлично</option>
+            <option value="4">Хорошо</option>
+            <option value="3">Удовлетворительно</option>
+            <option value="2">Неудовлетворительно</option>
+            <option value="1">Плохо</option>
+            <option value="0">Ужасно</option>
+        </select>
+    </div>
+    <div class="form-group">
+            <div class="my-3">
+                <textarea class="form-control mb-3" name="review_text" id="review_text" cols="30" rows="5"></textarea>
+            </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-light" value="Оставить отзыв">
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
